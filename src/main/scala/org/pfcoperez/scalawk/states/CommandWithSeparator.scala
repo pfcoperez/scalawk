@@ -1,13 +1,16 @@
 package org.pfcoperez.scalawk.states
 
 import org.pfcoperez.scalawk.AwkCommand
+import org.pfcoperez.scalawk.transitions.ToSolidCommand
 
 import scala.util.matching.Regex
 
-class CommandWithSeparator private(separator: Option[String]) extends AwkCommand {
+// https://www.gnu.org/software/gawk/manual/html_node/Default-Field-Splitting.html#Default-Field-Splitting
+class CommandWithSeparator(separator: Option[String] = None) extends AwkCommand
+ with ToSolidCommand {
 
   val fs: Option[String] = separator
-  override def commandOptions: Seq[String] = super.commandOptions ++ separator.map(sep => s"-F '$sep'")
+  override val commandOptions: Seq[String] = separator.map(sep => s"-F '$sep'").toSeq
 
   def this(separator: Regex) = this(Some(separator.toString))
   def this(separator: String) = this(Some(separator))

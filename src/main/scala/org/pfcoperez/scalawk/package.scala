@@ -1,5 +1,3 @@
 package org.pfcoperez
 
-package object scalawk {
-
-}
+package object scalawk extends AwkConversions

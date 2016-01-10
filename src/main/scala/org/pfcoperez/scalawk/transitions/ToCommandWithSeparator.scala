@@ -4,17 +4,13 @@ import org.pfcoperez.scalawk.states.CommandWithSeparator
 
 import scala.util.matching.Regex
 
+object ToCommandWithSeparator {
+  implicit def toCommandWithSep(x: ToCommandWithSeparator) = new CommandWithSeparator()
+}
+
 trait ToCommandWithSeparator {
 
-  def splitted = new {
-      def by(separator: String): CommandWithSeparator = null
-      def by(separator: Regex): CommandWithSeparator = null
-      def by = new {
-        // https://www.gnu.org/software/gawk/manual/html_node/Default-Field-Splitting.html#Default-Field-Splitting
-        def blankSequence: CommandWithSeparator = null
-      }
-
-
-    }
+  def splittedBy(separator: String) = new CommandWithSeparator(separator)
+  def splittedBy(separator: Regex) =  new CommandWithSeparator(separator)
 
 }

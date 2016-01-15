@@ -1,13 +1,14 @@
 package org.pfcoperez.scalawk.states
 
 import org.pfcoperez.scalawk.AwkCommand
-import org.pfcoperez.scalawk.entities.{AwkElement, AwkExpression}
+import org.pfcoperez.scalawk.entities.{SideEffectStatement, AwkElement, AwkExpression}
 
 class SolidCommand(val lineResult: Seq[AwkExpression])(prevSt: AwkCommand) extends AwkCommand
   with AwkElement { //This is the first state which can be used to obtain an AWK command string `toAwk`
 
   override val commandOptions: Seq[String] = prevSt.commandOptions
   override val linePresentation: Seq[AwkExpression] = lineResult
+  override val lineProgram: Seq[SideEffectStatement] = prevSt.lineProgram
 
 
   // AWK Program sections
@@ -17,7 +18,9 @@ class SolidCommand(val lineResult: Seq[AwkExpression])(prevSt: AwkCommand) exten
 
   // Per-line
   protected def eachLineActionBlock: String =
-    {lineProgram.map(_.toAwk) mkString "; "} + "print " + { linePresentation.map(_.toAwk) mkString " " }
+    {lineProgram.map(_.toAwk) mkString "; "} +
+      lineProgram.headOption.map(_ => "; ").getOrElse("") +
+      "print " + { linePresentation.map(_.toAwk) mkString " " }
 
 
   // END

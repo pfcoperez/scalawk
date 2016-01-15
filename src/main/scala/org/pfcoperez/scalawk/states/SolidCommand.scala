@@ -7,7 +7,7 @@ class SolidCommand(val lineResult: Seq[AwkExpression])(prevSt: AwkCommand) exten
   with AwkElement { //This is the first state which can be used to obtain an AWK command string `toAwk`
 
   override val commandOptions: Seq[String] = prevSt.commandOptions
-  override def linePresentation: Seq[AwkExpression] = lineResult
+  override val linePresentation: Seq[AwkExpression] = lineResult
 
 
   // AWK Program sections
@@ -16,7 +16,9 @@ class SolidCommand(val lineResult: Seq[AwkExpression])(prevSt: AwkCommand) exten
   protected def beginBlock: String = ""
 
   // Per-line
-  protected def eachLineActionBlock: String = "print " + { linePresentation.map(_.toAwk) mkString ""}
+  protected def eachLineActionBlock: String =
+    {lineProgram.map(_.toAwk) mkString "; "} + "print " + { linePresentation.map(_.toAwk) mkString " " }
+
 
   // END
   protected def endBlock: String = ""

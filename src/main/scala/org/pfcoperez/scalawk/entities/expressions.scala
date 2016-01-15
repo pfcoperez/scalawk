@@ -12,4 +12,7 @@ case class NumericLiteral(v: Any) extends Literal {
 
 case class Identifier(name: String) extends AwkExpression {
   override def toAwk: String = name
+
+  def :=(value: StatementWithResult): Assignment = Assignment(this, value)
+
 }

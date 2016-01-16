@@ -26,10 +26,11 @@ class SolidCommand(val lineResult: Seq[AwkExpression])(prevSt: AwkCommand) exten
   // END
   protected def endBlock: String = ""
 
-  protected def optionsBlock: String = commandOptions mkString " "
+  protected def optionsBlock: String =
+    {commandOptions mkString " "} + commandOptions.headOption.map(_ => " ").getOrElse("")
 
   override def toAwk: String =
-    s"""|awk ${optionsBlock} '
+    s"""|awk ${optionsBlock}'
         |${identifyBlock("BEGIN", beginBlock)}
         |${identifyBlock("", eachLineActionBlock)}
         |${identifyBlock("END", endBlock)}'""".stripMargin.replace("\n", "")

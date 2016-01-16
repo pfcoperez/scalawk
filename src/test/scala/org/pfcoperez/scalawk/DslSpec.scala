@@ -14,7 +14,7 @@ class DslSpec extends WordSpec with Matchers {
 
     "Create an AWK command with intermeidate variables" in {
       val builder = lines considering ('x := 3, 'y := 2) arePresentedAs('c1, " ", 'x, 'y)
-      builder.toAwk shouldBe """awk  '{x = 3; y = 2; print $1 " " x y}'"""
+      builder.toAwk shouldBe """awk '{x = 3; y = 2; print $1 " " x y}'"""
 
     }
   }

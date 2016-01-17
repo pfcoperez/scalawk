@@ -3,8 +3,11 @@ package org.pfcoperez.scalawk.states
 import org.pfcoperez.scalawk.AwkCommand
 import org.pfcoperez.scalawk.entities.{SideEffectStatement, AwkElement, AwkExpression}
 
-class SolidCommand(val lineResult: Seq[AwkExpression])(prevSt: AwkCommand) extends AwkCommand
+class SolidCommand(val lineResult: Seq[AwkExpression], prevSt: AwkCommand) extends AwkCommand
   with AwkElement { //This is the first state which can be used to obtain an AWK command string `toAwk`
+
+  def this(prev: AwkCommand) = this(prev.linePresentation , prev)
+  //def this(line: Seq[AwkExpression])(prev: AwkCommand) = this(line, prev)
 
   override val commandOptions: Seq[String] = prevSt.commandOptions
   override val linePresentation: Seq[AwkExpression] = lineResult
@@ -14,17 +17,20 @@ class SolidCommand(val lineResult: Seq[AwkExpression])(prevSt: AwkCommand) exten
   // AWK Program sections
 
   // BEGIN
-  protected def beginBlock: String = ""
+  protected def beginBlock: String = programToBlock(initialProgram)
 
   // Per-line
   protected def eachLineActionBlock: String =
-    {lineProgram.map(_.toAwk) mkString "; "} +
-      lineProgram.headOption.map(_ => "; ").getOrElse("") +
+    programToBlock(lineProgram) +
       "print " + { linePresentation.map(_.toAwk) mkString " " }
 
 
   // END
-  protected def endBlock: String = ""
+  protected def endBlock: String = programToBlock(endProgram)
+
+  protected def programToBlock(program: Seq[SideEffectStatement]) =
+    {program.map(_.toAwk) mkString "; "} +
+      program.headOption.map(_ => "; ").getOrElse("")
 
   protected def optionsBlock: String =
     {commandOptions mkString " "} + commandOptions.headOption.map(_ => " ").getOrElse("")

@@ -8,6 +8,7 @@ trait ToSolidCommand {
   self: AwkCommand =>
 
   def arePresentedAs(printElements: AwkExpression*): SolidCommand =
-    new SolidCommand(printElements)(self)
+    //new SolidCommand(printElements)(self)
+    new SolidCommand(printElements, self)
 
 }

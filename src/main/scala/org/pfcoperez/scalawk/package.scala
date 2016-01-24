@@ -1,6 +1,6 @@
 package org.pfcoperez
 
-import org.pfcoperez.scalawk.entities.{AwkElement, Identifier, NumericLiteral, StringLiteral}
+import org.pfcoperez.scalawk.entities._
 
 trait AwkConversions {
 
@@ -26,4 +26,10 @@ trait AwkConversions {
 
 }
 
-package object scalawk extends AwkConversions
+trait Util {
+  object present {
+    def apply(varExpressions: AwkExpression*): Print = Print(varExpressions)
+  }
+}
+
+package object scalawk extends AwkConversions with Util

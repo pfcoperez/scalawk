@@ -10,7 +10,7 @@ class CommandWithSeparator(separator: Option[String] = None) extends AwkCommand
  with ToSolidCommand
  with ToCommandWithLineProgram {
 
-  val fs: Option[String] = separator
+  override val fs: Option[String] = separator
   override val commandOptions: Seq[String] = separator.map(sep => s"-F '$sep'").toSeq
 
   def this(separator: Regex) = this(Some(separator.toString))

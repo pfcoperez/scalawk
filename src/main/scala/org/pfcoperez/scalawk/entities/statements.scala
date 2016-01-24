@@ -19,32 +19,45 @@ case class Print(expressions: Seq[AwkExpression]) extends SideEffectStatement {
 
 // With result statements
 
-trait ArithmeticOperator extends StatementWithResult {
+trait OperatorStatement extends StatementWithResult {
 
   protected val operator: String
+  protected val leftContext: String => String = x => x
+  protected val rightContext: String => String = x => x
 
   val left: StatementWithResult
   val right: StatementWithResult
 
-  override def toAwk: String = s"${left.toAwk} $operator ${right.toAwk}"
+  override def toAwk: String = s"${leftContext(left.toAwk)} $operator ${rightContext(right.toAwk)}"
 }
 
-case class Add(left: StatementWithResult, right: StatementWithResult) extends ArithmeticOperator {
+case class Add(left: StatementWithResult, right: StatementWithResult) extends OperatorStatement {
   override protected val operator: String = "+"
 }
 
-case class Sub(left: StatementWithResult, right: StatementWithResult) extends ArithmeticOperator {
+case class Sub(left: StatementWithResult, right: StatementWithResult) extends OperatorStatement {
   override protected val operator: String = "-"
 }
 
-case class Divide(left: StatementWithResult, right: StatementWithResult) extends ArithmeticOperator {
+trait PriorityOperators extends OperatorStatement {
+  override val rightContext: (String) => String = x => right match {
+    case Add(_,_) | Sub(_,_) => s"($x)"
+    case _ => x
+  }
+  override val leftContext: (String) => String = x => left match {
+    case Add(_,_) | Sub(_,_) => s"($x)"
+    case _ => x
+  }
+}
+
+case class Divide(left: StatementWithResult, right: StatementWithResult) extends PriorityOperators {
   override protected val operator: String = "/"
 }
 
-case class Multiply(left: StatementWithResult, right: StatementWithResult) extends ArithmeticOperator {
+case class Multiply(left: StatementWithResult, right: StatementWithResult) extends PriorityOperators {
   override protected val operator: String = "*"
 }
 
-case class Parenthesis(subStatement: StatementWithResult) extends StatementWithResult {
-  override def toAwk: String = s"(${subStatement.toAwk})"
+case class Concat(left: StatementWithResult, right: StatementWithResult) extends OperatorStatement {
+  override protected val operator: String = ""
 }

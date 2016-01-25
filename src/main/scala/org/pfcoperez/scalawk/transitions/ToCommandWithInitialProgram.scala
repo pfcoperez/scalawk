@@ -7,6 +7,7 @@ import org.pfcoperez.scalawk.states.CommandWithInitialProgram
 trait ToCommandWithInitialProgram {
   self: AwkCommand =>
 
-  def provided(initialProgram: SideEffectStatement*): CommandWithInitialProgram = new CommandWithInitialProgram
+  def provided(initialProgram: SideEffectStatement*): CommandWithInitialProgram =
+    new CommandWithInitialProgram(initialProgram)(self)
 
 }

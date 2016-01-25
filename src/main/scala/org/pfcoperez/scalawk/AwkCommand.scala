@@ -9,7 +9,4 @@ trait AwkCommand {
   private[scalawk] val lineProgram: Seq[SideEffectStatement] = Seq.empty
   private[scalawk] val initialProgram: Seq[SideEffectStatement] = Seq.empty
   private[scalawk] val endProgram: Seq[SideEffectStatement] = Seq.empty
-
-  private[scalawk] val fs: Option[String] = None
-
 }

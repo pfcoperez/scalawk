@@ -25,18 +25,19 @@ class DslSpec extends WordSpec with Matchers {
           """awk '{x = 4; s = 2; res = x * (s + 1); print res; }'"""
       )
 
-      val mytest = lines computing ('x := 3, 'y := 'x * 2) arePresentedAs('c1, " ", 'x, 'y) finallyDo (
-         present('x)
-        )
-
       for((builder, expected) <- casesAndExpectations)
         builder.toAwk shouldBe expected
 
     }
 
-    /*"Create an AWK command with an initial program" in {
-      provided('s := 0) lines splittedBy (";") considering('s := 's + 1) finallyDo(present('s))
-    }*/
+    "Create an AWK command with an initial program" in {
+
+      // Vount lines
+      val builder = lines provided('s := 0) computing ('s := 's + 1) arePresentedAs() finallyDo (present('s))
+
+      builder.toAwk shouldBe """awk 'BEGIN{s = 0; }{s = s + 1; }END{print s; }'"""
+      
+    }
 
   }
 

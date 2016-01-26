@@ -5,16 +5,14 @@ import org.pfcoperez.scalawk.entities.{Print, SideEffectStatement, AwkElement, A
 import org.pfcoperez.scalawk.transitions.ToCommandWithLastAction
 
 //This is the first state which can be used to obtain an AWK command string `toAwk`
-class SolidCommand(val lineResult: Seq[AwkExpression], prevSt: AwkCommand) extends AwkCommand
+class SolidCommand(val lineResult: Seq[AwkExpression], prevSt: AwkCommand) extends AwkCommand(prevSt)
   with AwkElement
   with ToCommandWithLastAction {
 
   def this(prev: AwkCommand) = this(prev.linePresentation , prev)
   //def this(line: Seq[AwkExpression])(prev: AwkCommand) = this(line, prev)
 
-  override val commandOptions: Seq[String] = prevSt.commandOptions
   override val linePresentation: Seq[AwkExpression] = lineResult
-  override val lineProgram: Seq[SideEffectStatement] = prevSt.lineProgram
 
 
   // AWK Program sections
@@ -24,7 +22,7 @@ class SolidCommand(val lineResult: Seq[AwkExpression], prevSt: AwkCommand) exten
 
   // Per-line
   protected def eachLineActionBlock: String =
-    programToBlock(lineProgram :+ Print(linePresentation))
+    programToBlock(lineProgram ++ linePresentation.headOption.map(_ => Print(linePresentation)))
 
 
   // END

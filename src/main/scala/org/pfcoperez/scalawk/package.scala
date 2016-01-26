@@ -28,7 +28,8 @@ trait AwkConversions {
 
 trait Util {
   object present {
-    def apply(varExpressions: AwkExpression*): Print = Print(varExpressions)
+    def apply(varExpressions: AwkExpression*): Print =
+      Print(varExpressions)
   }
 }
 

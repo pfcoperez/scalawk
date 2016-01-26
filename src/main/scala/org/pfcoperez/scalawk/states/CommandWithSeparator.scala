@@ -11,13 +11,9 @@ class CommandWithSeparator(separator: Option[String] = None) extends AwkCommand
   with ToCommandWithLineProgram
   with ToCommandWithInitialProgram {
 
-  private[scalawk] val fs: Option[String] = separator
-
   override val commandOptions: Seq[String] = separator.map(sep => s"-F '$sep'").toSeq
 
   def this(separator: Regex) = this(Some(separator.toString))
   def this(separator: String) = this(Some(separator))
-
-
 
 }

@@ -1,14 +1,15 @@
 package org.pfcoperez.scalawk.transitions
 
+import org.pfcoperez.scalawk.AwkCommand
 import org.pfcoperez.scalawk.entities.SideEffectStatement
-import org.pfcoperez.scalawk.states.{CommandWithSeparator, CommandWithLineProgram}
+import org.pfcoperez.scalawk.states.CommandWithLineProgram
 
 //object ToCommandWithLineProgram
 
 trait ToCommandWithLineProgram {
-  self: CommandWithSeparator =>
+  self: AwkCommand =>
 
-  def considering(lines: SideEffectStatement*): CommandWithLineProgram =
+  def computing(lines: SideEffectStatement*): CommandWithLineProgram =
     new CommandWithLineProgram(lines)(self)
 
 }

@@ -13,8 +13,8 @@ case class Assignment(left: Identifier, value: StatementWithResult) extends Side
   override def toAwk: String = s"${left.toAwk} = ${value.toAwk}"
 }
 
-case class Print(expressions: Seq[AwkExpression]) extends SideEffectStatement {
-  override def toAwk: String = "print " + { expressions.map(_.toAwk) mkString " " }
+case class Print(exps: Seq[AwkExpression]) extends SideEffectStatement {
+  override def toAwk: String = "print " + { exps.map(_.toAwk) mkString " " }
 }
 
 // With result statements

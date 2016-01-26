@@ -1,6 +1,5 @@
 package org.pfcoperez.scalawk
 
-import org.pfcoperez.scalawk.entities.{StatementWithResult, NumericLiteral, AwkExpression}
 import org.scalatest.{Matchers, WordSpec}
 
 class DslSpec extends WordSpec with Matchers {
@@ -14,21 +13,30 @@ class DslSpec extends WordSpec with Matchers {
 
 
     "Create an AWK command with intermeidate variables" in {
-      val builder = lines considering ('x := 3, 'y := 'x * 2) arePresentedAs('c1, " ", 'x, 'y)
+      val builder = lines computing ('x := 3, 'y := 'x * 2) arePresentedAs('c1, " ", 'x, 'y)
       builder.toAwk shouldBe """awk '{x = 3; y = x * 2; print $1 " " x y; }'"""
     }
 
     "Create an AWK command with some operations" in {
       val casesAndExpectations = Seq (
-        {lines considering ('x := 3, 's := "hello", 'c := 'x ++ 's) arePresentedAs("Concatenation ", 'c)} ->
+        {lines computing ('x := 3, 's := "hello", 'c := 'x ++ 's) arePresentedAs("Concatenation ", 'c)} ->
           """awk '{x = 3; s = "hello"; c = x  s; print "Concatenation " c; }'""",
-        {lines considering ('x := 4, 's := 2, 'res := 'x * ('s + 1)) arePresentedAs ('res)} ->
+        {lines computing ('x := 4, 's := 2, 'res := 'x * ('s + 1)) arePresentedAs ('res)} ->
           """awk '{x = 4; s = 2; res = x * (s + 1); print res; }'"""
       )
 
       for((builder, expected) <- casesAndExpectations)
         builder.toAwk shouldBe expected
 
+    }
+
+    "Create an AWK command with an initial program" in {
+
+      // Vount lines
+      val builder = lines provided('s := 0) computing ('s := 's + 1) arePresentedAs() finallyDo (present('s))
+
+      builder.toAwk shouldBe """awk 'BEGIN{s = 0; }{s = s + 1; }END{print s; }'"""
+      
     }
 
   }

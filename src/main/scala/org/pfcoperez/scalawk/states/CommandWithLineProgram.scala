@@ -1,8 +1,8 @@
 package org.pfcoperez.scalawk.states
 
 import org.pfcoperez.scalawk.AwkCommand
-import org.pfcoperez.scalawk.entities.{AwkExpression, SideEffectStatement}
-import org.pfcoperez.scalawk.transitions.{ToCommandWithInitialProgram, ToSolidCommand}
+import org.pfcoperez.scalawk.entities.SideEffectStatement
+import org.pfcoperez.scalawk.transitions.ToSolidCommand
 
 class CommandWithLineProgram(
                               statements: Seq[SideEffectStatement]

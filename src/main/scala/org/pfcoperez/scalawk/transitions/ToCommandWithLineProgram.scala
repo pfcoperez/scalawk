@@ -4,8 +4,6 @@ import org.pfcoperez.scalawk.AwkCommand
 import org.pfcoperez.scalawk.entities.SideEffectStatement
 import org.pfcoperez.scalawk.states.CommandWithLineProgram
 
-//object ToCommandWithLineProgram
-
 trait ToCommandWithLineProgram {
   self: AwkCommand =>
 

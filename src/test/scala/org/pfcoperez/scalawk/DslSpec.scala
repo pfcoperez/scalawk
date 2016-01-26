@@ -33,7 +33,7 @@ class DslSpec extends WordSpec with Matchers {
     "Create an AWK command with an initial program" in {
 
       // Vount lines
-      val builder = lines provided('s := 0) computing ('s := 's + 1) arePresentedAs() finallyDo (present('s))
+      val builder = lines provided('s := 0) computing ('s := 's + 1) finallyDo (present('s))
 
       builder.toAwk shouldBe """awk 'BEGIN{s = 0; }{s = s + 1; }END{print s; }'"""
       

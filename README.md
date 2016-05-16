@@ -28,22 +28,22 @@ These actions can be composed of one or several:
 
 ### Concatenation with custom split element
 
-    lines splittedBy ";" arePresentedAs ('c1, 'c2)
+    lines splitBy ";" arePresentedAs ('c1, 'c2)
     > awk -F ';' '{print $1 $2; }'
 
 or:
 
-    lines splittedBy ";" computing ('concatenated := 'c1 ++ 'c2) arePresentedAs ('concatenated)
+    lines splitBy ";" computing ('concatenated := 'c1 ++ 'c2) arePresentedAs ('concatenated)
     > awk -F ';' '{concatenated = $1  $2; print concatenated; }'
 
 ### Regular expressions as token separators
 
-    lines splittedBy "_+".r arePresentedAs ('c1, " ", 'c2, "hello", 1, 'x)
+    lines splitBy "_+".r arePresentedAs ('c1, " ", 'c2, "hello", 1, 'x)
     > awk -F '_+' '{print $1 " " $2 "hello" 1 x; }'
 
 ### Other examples
 
-    lines splittedBy "_+".r arePresentedAs ('c1, " ", 'c2, "hello", 1, 'x)
+    lines splitBy "_+".r arePresentedAs ('c1, " ", 'c2, "hello", 1, 'x)
     > awk -F '_+' '{print $1 " " $2 "hello" 1 x; }'
     
     lines computing ('x := 4, 's := 2, 'res := 'x * ('s + 1)) arePresentedAs ('res)

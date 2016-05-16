@@ -7,7 +7,7 @@ class DslSpec extends WordSpec with Matchers {
   "An AWK DSL"  should {
 
     "Create a basic AWK command " in {
-      val builder = lines splittedBy "_+".r arePresentedAs ('c1, " ", 'c2, "hello", 1, 'x)
+      val builder = lines splitBy "_+".r arePresentedAs ('c1, " ", 'c2, "hello", 1, 'x)
       builder.toAwk shouldBe """awk -F '_+' '{print $1 " " $2 "hello" 1 x; }'"""
     }
 

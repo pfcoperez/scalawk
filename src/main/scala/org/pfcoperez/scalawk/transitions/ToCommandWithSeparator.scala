@@ -10,7 +10,7 @@ object ToCommandWithSeparator {
 
 trait ToCommandWithSeparator {
 
-  def splittedBy(separator: String) = new CommandWithSeparator(separator)
-  def splittedBy(separator: Regex) =  new CommandWithSeparator(separator)
+  def splitBy(separator: String) = new CommandWithSeparator(separator)
+  def splitBy(separator: Regex) =  new CommandWithSeparator(separator)
 
 }

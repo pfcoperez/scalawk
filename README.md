@@ -1,11 +1,11 @@
 # ScalAwk
 
 Scala DSL to easily compose [awk](http://www.gnu.org/software/gawk/manual/gawk.html) programs.
-Its underlying goal is to serve as a simple and concise example of how to build DSLs upong Scala.
+Its underlying goal is to serve as a simple and concise example of how to build DSLs upon Scala.
 
 ## Features
 
-It targets a subset of awk on which you can build commands with:
+It targets a subset of awk by which you can build commands with:
 
 - Customized separators.
 - Actions executed before iterating over the input lines.
